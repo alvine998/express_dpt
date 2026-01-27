@@ -28,11 +28,11 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: `http://localhost:${PORT}/api`,
+        url: `http://localhost:${PORT}`,
         description: "Local server",
       },
       {
-        url: `http://154.26.137.37:4020/api`,
+        url: `http://154.26.137.37:4020`,
         description: "Server",
       },
     ],
