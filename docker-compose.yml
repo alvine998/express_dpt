@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: express_dpt_app
+    ports:
+      - "4020:4020"
+    environment:
+      - PORT=4020
+      - DB_HOST=${DB_HOST:-localhost}
+      - DB_NAME=${DB_NAME:-autolasik}
+      - DB_USER=${DB_USER:-root}
+      - DB_PASS=${DB_PASS:-alvine1234}
+    env_file:
+      - .env
+    restart: unless-stopped
