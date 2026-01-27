@@ -31,6 +31,10 @@ const swaggerOptions = {
         url: `http://localhost:${PORT}/api`,
         description: "Local server",
       },
+      {
+        url: `http://154.26.137.37:4020/api`,
+        description: "Server",
+      },
     ],
     components: {
       securitySchemes: {
