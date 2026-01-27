@@ -1,4 +1,4 @@
-const apiKey = "aajet_api_rlE14dyBWNbos4UtWhcYGYRa"; // Hardcoded as per request, can be moved to env
+const apiKey = "auto_api_rlE14dyBWNbos4UtWhcYGYRa"; // Hardcoded as per request, can be moved to env
 
 const authMiddleware = (req, res, next) => {
   const requestApiKey = req.headers["x-api-key"];
