@@ -12,9 +12,21 @@ exports.getHistory = async (req, res) => {
       exclude_pending,
       batch,
       processing_status,
+      admin,
     } = req.query;
 
-    const where = { uid };
+    const where = {};
+
+    // Only require uid if not in admin mode
+    if (admin != 1) {
+      if (!uid) {
+        return res.status(400).json({ message: "uid is required" });
+      }
+      where.uid = uid;
+    } else if (uid) {
+      // Admin can optionally filter by uid
+      where.uid = uid;
+    }
 
     if (search) {
       // Assuming search on kpj or data
