@@ -38,9 +38,8 @@ exports.login = async (req, res) => {
         expiration_date: user.expiration_date,
         jenis_apps: user.jenis_apps,
         custom_domain: user.custom_domain,
-        message: "Login successful",
-        min_version: user.min_version,
-        current_version: user.current_version,
+        session_token: user.session_token,
+        admin_session_token: user.admin_session_token,
       },
     });
   } catch (error) {

@@ -104,4 +104,25 @@ router.post("/", (req, res) => {
   res.status(400).json({ message: "Invalid action" });
 });
 
+/**
+ * @swagger
+ * /api/sipp_history:
+ *   delete:
+ *     summary: Delete SIPP Record
+ *     tags: [SIPP]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Record deleted
+ */
+router.delete("/", sippController.deleteRecord);
+
 module.exports = router;

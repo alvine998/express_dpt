@@ -9,22 +9,22 @@ const sequelize = require("./src/config/database");
 require("dotenv").config();
 
 const app = express();
-const PORT = process.env.PORT || 9001;
+const PORT = process.env.PORT || 4020;
 
 // Middleware
 app.use(cors());
 app.use(morgan("dev"));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ limit: "50mb" }));
+app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 
 // Swagger Config
 const swaggerOptions = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "Auto-Lasik API",
+      title: "BPJS Scrapper API",
       version: "1.0.0",
-      description: "API for Auto-Lasik User and Batch Management",
+      description: "API for BPJS Scrapper Mobile Application",
     },
     servers: [
       {
@@ -33,7 +33,7 @@ const swaggerOptions = {
       },
       {
         url: `http://154.26.137.37:4020`,
-        description: "Server",
+        description: "Production Server",
       },
     ],
     components: {
@@ -64,13 +64,16 @@ const sippRoutes = require("./src/routes/sipp");
 const externalRoutes = require("./src/routes/external");
 const sessionRoutes = require("./src/routes/session");
 const predictRoutes = require("./src/routes/predict");
+const usageRoutes = require("./src/routes/usage");
 
 app.use("/api/users", userRoutes);
 app.use("/api/batches", batchRoutes);
 app.use("/api/sipp_history", sippRoutes);
-app.use("/api/servicesjmo", externalRoutes); // Matches /servicesjmo/get-public-key/
+app.use("/api/servicesjmo", externalRoutes);
 app.use("/api/session_verify", sessionRoutes);
-app.use("/api/predict", predictRoutes);
+app.use("/api/usage", usageRoutes);
+// Predict route without /api/ prefix as per spec
+app.use("/predict", predictRoutes);
 
 // Sync Database and Start Server
 sequelize

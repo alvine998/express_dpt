@@ -44,16 +44,15 @@ exports.getHistory = async (req, res) => {
       where.processing_status = { [Op.in]: processing_status.split(",") };
     }
 
-    const histories = await SIPPHistory.findAll({
+    const { count, rows: histories } = await SIPPHistory.findAndCountAll({
       where,
       limit: parseInt(limit),
       offset: parseInt(offset),
     });
 
     res.json({
-      data: {
-        records: histories,
-      },
+      data: histories,
+      total: count,
     });
   } catch (error) {
     console.error("Get history error:", error);
@@ -110,6 +109,33 @@ exports.bulkUpdate = async (req, res) => {
     res.json({ message: "Bulk update processed" });
   } catch (error) {
     console.error("Bulk update error:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+// DELETE /api/sipp_history
+exports.deleteRecord = async (req, res) => {
+  try {
+    const { id } = req.body;
+
+    if (!id) {
+      return res.status(400).json({ message: "id is required" });
+    }
+
+    const record = await SIPPHistory.findByPk(id);
+
+    if (!record) {
+      return res.status(404).json({ message: "Record not found" });
+    }
+
+    await record.destroy();
+
+    res.json({
+      success: true,
+      message: "Record deleted",
+    });
+  } catch (error) {
+    console.error("Delete record error:", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };

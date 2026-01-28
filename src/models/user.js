@@ -53,6 +53,14 @@ const User = sequelize.define(
       type: DataTypes.STRING,
       allowNull: true,
     },
+    session_token: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    admin_session_token: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
   },
   {
     tableName: "users",
