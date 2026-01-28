@@ -62,11 +62,15 @@ const userRoutes = require("./src/routes/users");
 const batchRoutes = require("./src/routes/batches");
 const sippRoutes = require("./src/routes/sipp");
 const externalRoutes = require("./src/routes/external");
+const sessionRoutes = require("./src/routes/session");
+const predictRoutes = require("./src/routes/predict");
 
 app.use("/api/users", userRoutes);
 app.use("/api/batches", batchRoutes);
 app.use("/api/sipp_history", sippRoutes);
 app.use("/api/servicesjmo", externalRoutes); // Matches /servicesjmo/get-public-key/
+app.use("/api/session_verify", sessionRoutes);
+app.use("/api/predict", predictRoutes);
 
 // Sync Database and Start Server
 sequelize

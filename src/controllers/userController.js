@@ -59,3 +59,68 @@ exports.logout = async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+// User Verification API - GET /users?uid={uid}&validate=1
+exports.validateUser = async (req, res) => {
+  try {
+    const { uid } = req.query;
+
+    if (!uid) {
+      return res.status(400).json({ message: "uid is required" });
+    }
+
+    const user = await User.findOne({ where: { uid } });
+
+    if (!user) {
+      return res.status(404).json({
+        valid: false,
+        message: "User not found",
+      });
+    }
+
+    // Check if user is suspended
+    if (user.suspended) {
+      return res.json({
+        valid: false,
+        message: "User is suspended",
+        data: {
+          uid: user.uid,
+          suspended: true,
+        },
+      });
+    }
+
+    // Check expiration
+    if (
+      user.expiration_date &&
+      user.expiration_date > 0 &&
+      user.expiration_date < Date.now()
+    ) {
+      return res.json({
+        valid: false,
+        message: "User subscription expired",
+        data: {
+          uid: user.uid,
+          expiration_date: user.expiration_date,
+        },
+      });
+    }
+
+    // User is valid
+    res.json({
+      valid: true,
+      message: "User is valid",
+      data: {
+        uid: user.uid,
+        username: user.username,
+        role: user.role,
+        suspended: user.suspended,
+        expiration_date: user.expiration_date,
+        jenis_apps: user.jenis_apps,
+      },
+    });
+  } catch (error) {
+    console.error("Validate user error:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
